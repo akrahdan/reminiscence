@@ -17,12 +17,15 @@ def load_residents(headers):
 def create_resident(resident, headers):
     res_obj = {'data': {'ResidentId': resident.ResidentId,
                         'RoomNo': resident.RoomNo}}
-
+    
+    print("CREATE: ", res_obj)
     resp = session.post('api/residents', headers=headers, json=res_obj)
+    print("RESP: ", resp.status_code)
     json_obj = resp.json()
     result = json_obj["data"]
-
+    print("Headers: ", headers)
     resident = transform_attribute(result["attributes"])
+    
     resident["id"] = result["id"]
     return resident
 
