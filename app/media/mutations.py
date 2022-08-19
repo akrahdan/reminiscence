@@ -34,12 +34,12 @@ class MediaMutation:
     async def read_files(self, media: FolderInput, info: Info) -> Media:
         request = info.context["request"]
         print("Files:", media)
-        content = []
-        for file in media.files:
-            content = (await file.read()).decode()
-            content.append(content)
+        contents = []
+        # for file in media.files:
+        #     content = (await file.read())
+        #     contents.append(content)
         
-        print("Content:", content)
+        # print("Content:", content)
         media = upload_media(media, headers=request.headers)
         return Media.from_instance(media)
         

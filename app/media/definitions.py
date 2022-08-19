@@ -1,12 +1,12 @@
 import strawberry
-
+from typing import Optional
 
 @strawberry.type
 class Media:
     id: int
     name: str
-    width: float
-    height: float
+    width: Optional[float]
+    height: Optional[float]
     mime: str
     url: str
 
@@ -15,8 +15,8 @@ class Media:
         return cls(
             id=instance['id'],
             name=instance['name'],
-            width=instance["width"],
-            height=instance['height'],
+            width=instance.get("width", None),
+            height=instance.get('height', None),
             mime=instance['mime'],
             url=instance['url']
         )

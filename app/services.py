@@ -11,7 +11,8 @@ class StrapiSession(Session):
         return super(StrapiSession, self).request(method, url, *args, **kwargs)
     
     
-session = StrapiSession(base_url="http://10.140.127.124:1337")
+session = StrapiSession(base_url="https://pandasvr.d.umn.edu")
+# session = StrapiSession(base_url="http://10.140.127.124:1337")
 
    
 

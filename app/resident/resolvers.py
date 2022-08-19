@@ -1,11 +1,16 @@
-from services import StrapiSession
-session = StrapiSession(base_url="http://10.140.127.124:1337")
+from services import session
+import requests
+# session = StrapiSession(base_url="http://10.140.127.124:1337")
 # headers = { "Authorization": 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYwMjM3MDU2LCJleHAiOjE2NjI4MjkwNTZ9.1iL1VyHL1GUnkkplzRw6-qjoS6712e1alMljuLpwyAA'}
 
 
 def load_residents(headers):
+    try:
 
-    resp = session.get('api/residents', headers=headers)
+       resp = session.get('api/residents', headers=headers)
+    except requests.exceptions.RequestException as e:
+        raise SystemExit(e)
+    
     json_obj = resp.json()
 
     residents = json_obj["data"]
@@ -19,7 +24,11 @@ def create_resident(resident, headers):
                         'RoomNo': resident.RoomNo}}
     
     print("CREATE: ", res_obj)
-    resp = session.post('api/residents', headers=headers, json=res_obj)
+    try: 
+        resp = session.post('api/residents', headers=headers, json=res_obj)
+    
+    except requests.exceptions.RequestException as e:
+        raise SystemExit(e)
     print("RESP: ", resp.status_code)
     json_obj = resp.json()
     result = json_obj["data"]

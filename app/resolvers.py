@@ -1,6 +1,6 @@
-from services import StrapiSession
+from services import session
 import json
-session = StrapiSession(base_url="http://10.140.127.124:1337")
+# session = StrapiSession(base_url="https://pandasvr.d.umn.edu")
 headers = { "Authorization": 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYwMjM3MDU2LCJleHAiOjE2NjI4MjkwNTZ9.1iL1VyHL1GUnkkplzRw6-qjoS6712e1alMljuLpwyAA'}
 
 def load_events():
