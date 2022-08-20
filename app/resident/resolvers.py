@@ -1,17 +1,25 @@
 from services import session
+from starlette.responses import StreamingResponse
+from starlette.background import BackgroundTask
 import requests
-# session = StrapiSession(base_url="http://10.140.127.124:1337")
-# headers = { "Authorization": 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYwMjM3MDU2LCJleHAiOjE2NjI4MjkwNTZ9.1iL1VyHL1GUnkkplzRw6-qjoS6712e1alMljuLpwyAA'}
+import httpx
+
+from settings.config import API_ENDPOINT
 
 
-def load_residents(headers):
-    try:
 
-       resp = session.get('api/residents', headers=headers)
-    except requests.exceptions.RequestException as e:
-        raise SystemExit(e)
-    
-    json_obj = resp.json()
+
+async def load_residents(headers):
+
+    headers = {"authorization" : headers.get('authorization')}
+    async with httpx.AsyncClient(base_url=API_ENDPOINT) as client:
+        
+        res = await client.get(url="/api/residents", headers=headers)
+
+    print("Res: ", res.json())
+   
+    json_obj = res.json()
+   
 
     residents = json_obj["data"]
     iterator = map(transform_resident, residents)
@@ -35,25 +43,25 @@ def create_resident(resident, headers):
     print("Headers: ", headers)
     resident = transform_attribute(result["attributes"])
     
-    resident["id"] = result["id"]
+    resident["id"] = result.get("id")
     return resident
 
 
 def transform_attribute(attr):
     attributes = {}
-    attributes['residentId'] = attr["ResidentId"]
-    attributes["roomNo"] = attr["RoomNo"]
-    attributes["updatedAt"] = attr["updatedAt"]
-    attributes["createdAt"] = attr["createdAt"]
+    attributes['residentId'] = attr.get("ResidentId", '')
+    attributes["roomNo"] = attr.get("RoomNo", '')
+    attributes["updatedAt"] = attr.get("updatedAt", '')
+    attributes["createdAt"] = attr.get("createdAt", '')
     return attributes
 
 
 def transform_resident(resident):
     trans_resident = {}
-    trans_resident['id'] = resident['id']
-    attributes = transform_attribute(resident["attributes"])
-    trans_resident['residentId'] = attributes['residentId']
-    trans_resident['roomNo'] = attributes["roomNo"]
-    trans_resident['updatedAt'] = attributes["updatedAt"]
-    trans_resident["createdAt"] = attributes["createdAt"]
+    trans_resident['id'] = resident.get('id', '')
+    attributes = transform_attribute(resident.get("attributes"))
+    trans_resident['residentId'] = attributes.get('residentId', None)
+    trans_resident['roomNo'] = attributes.get("roomNo", None)
+    trans_resident['updatedAt'] = attributes.get("updatedAt", None)
+    trans_resident["createdAt"] = attributes.get("createdAt", None)
     return trans_resident

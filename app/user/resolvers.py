@@ -1,5 +1,6 @@
 from services import session
-
+import httpx
+from settings.config import API_ENDPOINT
 
 def user_login(login, headers):
     json_obj = {'identifier': login.identifier, "password": login.password}
@@ -13,8 +14,13 @@ def user_login(login, headers):
     return user
 
 
-def get_currrent_user(headers):
-    res = session.get("/api/users/me", headers=headers)
+async def get_currrent_user(headers):
+    headers = {"authorization" : headers.get('authorization', None)}
+    async with httpx.AsyncClient(base_url=API_ENDPOINT) as client:
+        
+        res = await client.get(url="/api/users/me", headers=headers)
+
+    print("Res: ", res.json())
     return res.json()
 
 

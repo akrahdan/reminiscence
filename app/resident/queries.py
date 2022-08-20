@@ -8,9 +8,11 @@ from .resolvers import load_residents
 class ResidentQuery:
 
     @strawberry.field
-    def allResidents(self, info: Info) -> List[Resident]:
+    async def allResidents(self, info: Info) -> List[Resident]:
         request = info.context["request"]
-        residents = load_residents(headers=request.headers)
+        residents =  await load_residents(headers=request.headers)
+        print("Resident: ", residents)
 
+        # return [Resident(id =2, residentId="1233", roomNo="1223", createdAt="12345", updatedAt="222-2222")]
         return [Resident.from_instance(resident) for resident in residents]
 

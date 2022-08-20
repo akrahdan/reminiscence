@@ -8,7 +8,11 @@ from .resolvers import load_events
 @strawberry.type
 class EventQuery:
     @strawberry.field
-    def all_events(self, info: Info) -> List[Event]:
+    async def all_events(self, info: Info) -> List[Event]:
         request = info.context['request']
-        events = load_events(headers=request.headers)
+    
+        events = await load_events(header=request.headers)
+        print("Events: ", [Event.from_instance(event) for event in events])
+
+        # return [Event(id=1, title="Gogog", description="d",createdAt="", updatedAt="", photos=None)]
         return [Event.from_instance(event) for event in events]

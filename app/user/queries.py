@@ -7,8 +7,8 @@ from .definitions import User
 class UserQuery:
     
     @strawberry.field
-    def current_user(self, info: Info) -> User:
+    async def current_user(self, info: Info) -> User:
         request = info.context["request"]
 
-        user = get_currrent_user(request.headers)
+        user = await get_currrent_user(request.headers)
         return User.from_instance(user)

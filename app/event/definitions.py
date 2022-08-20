@@ -12,13 +12,16 @@ class Event:
     
     @classmethod
     def from_instance(cls, instance: dict):
+        photos = instance.get("photos", None)
+        if photos:
+            photos = [Media.from_instance(photo) for photo in instance.get("photos")] 
         return cls(
             id = instance['id'],
             title = instance['title'],
             description = instance["description"],
             createdAt = instance['createdAt'],
             updatedAt = instance['updatedAt'],
-            photos = [Media.from_instance(photo) for photo in instance["photos"]]
+            photos = photos
         )
 
 
