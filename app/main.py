@@ -1,30 +1,24 @@
-from fastapi import FastAPI, Form, File, UploadFile, Request
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 import strawberry
-from requests_toolbelt.multipart import MultipartEncoder
+
 from strawberry.fastapi import GraphQLRouter
-from typing import List
+from pathlib import Path
 from queries import Query
 from mutations import Mutation
-from media.resolvers import upload_files
-import json
+
+BASE_DIR = Path(__file__).resolve().parent
 
 app = FastAPI()
 
 
-@app.post("/api/upload")
-async def submitForm(request: Request, refId: str = Form(...), ref: str=Form(...), field: str = Form(...), files: List[UploadFile] = File(...)):
-  contents = []
-  for file in files:
-    contents.append(file.file)
+@app.get("/api/upload/{rest:path}")
+async def fetch_file(request: Request, rest:str):
+  filename = f'event/upload/{rest}'
+  path = BASE_DIR.joinpath(filename)
+  return FileResponse(path=path)
   
-  fields= {
-      'refId': refId,
-      'ref': ref,
-      'field': field,
-      'files': json.dumps(contents)
-    }
-  upload_files(fields, files, request.headers)
 
     
 

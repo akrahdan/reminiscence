@@ -37,10 +37,10 @@ def create_resident(resident, headers):
     
     except requests.exceptions.RequestException as e:
         raise SystemExit(e)
-    print("RESP: ", resp.status_code)
+    # print("RESP: ", resp.status_code)
     json_obj = resp.json()
     result = json_obj["data"]
-    print("Headers: ", headers)
+   
     resident = transform_attribute(result["attributes"])
     
     resident["id"] = result.get("id")
