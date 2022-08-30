@@ -1,7 +1,7 @@
 from multiprocessing.util import info
 import strawberry
 from strawberry.types import Info
-from typing  import List,  Optional
+from typing  import List
 from .definitions import Event
 from .resolvers import load_events
 

@@ -3,7 +3,6 @@ from services import session
 from pathlib import Path
 import requests
 import urllib.request
-import os
 from settings.config import API_ENDPOINT
 import httpx
 from resident.resolvers import transform_attribute as transform_resident
@@ -93,7 +92,7 @@ def transform_files(event):
     BASE_DIR = Path(__file__).resolve().parent
     filename = attributes.get("name", 'newfile.jpg')
     path = f'upload/{photo_id}'
-    new_url = f'/upload/{photo_id}/{filename}'
+    new_url = f'/images/{photo_id}/{filename}'
 
     FILE_DIR = Path(BASE_DIR / path)
     FILE_DIR.mkdir(parents=True, exist_ok=True)
