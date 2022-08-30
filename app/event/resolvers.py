@@ -1,4 +1,4 @@
-from turtle import st
+
 from services import session
 from pathlib import Path
 import requests
@@ -15,15 +15,13 @@ async def load_events(header):
 
         res = await client.get(url="/api/events?populate=*", headers=headers)
 
-    # print("Res: ", res.json())
 
     json_obj = res.json()
 
     eventList = json_obj["data"]
-    # print("EventList: ", eventList)
 
     event_iterator = map(transform_event, eventList)
-    # print("EventList: ", list(event_iterator))
+
     return list(event_iterator)
 
 
@@ -101,7 +99,11 @@ def transform_files(event):
     FILE_DIR.mkdir(parents=True, exist_ok=True)
 
     filename = FILE_DIR.joinpath(filename)
-
+    if filename.is_file():
+       trans_file["url"] = new_url
+       trans_file["mime"] = attributes.get("mime", None)
+       return trans_file
+       
     urllib.request.urlretrieve(url=url, filename=filename)
     trans_file["url"] = new_url
     trans_file["mime"] = attributes.get("mime", None)
