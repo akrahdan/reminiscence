@@ -12,7 +12,7 @@ class ResidentInput:
 class ResidentMutation:
 
     @strawberry.mutation
-    def add_resident(self, resident: ResidentInput, info: Info) -> Resident:
+    async def add_resident(self, resident: ResidentInput, info: Info) -> Resident:
         request = info.context["request"]
-        res = create_resident(resident, headers=request.headers)
+        res = await create_resident(resident, headers=request.headers)
         return Resident.from_instance(res)

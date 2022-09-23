@@ -16,8 +16,6 @@ async def load_residents(headers):
         
         res = await client.get(url="/api/residents", headers=headers)
 
-    print("Res: ", res.json())
-   
     json_obj = res.json()
    
 
@@ -27,17 +25,15 @@ async def load_residents(headers):
     return list(iterator)
 
 
-def create_resident(resident, headers):
+async def create_resident(resident, headers):
     res_obj = {'data': {'ResidentId': resident.ResidentId,
                         'RoomNo': resident.RoomNo}}
     
-    print("CREATE: ", res_obj)
-    try: 
-        resp = session.post('api/residents', headers=headers, json=res_obj)
+    headers = {"authorization": headers.get('authorization')}
     
-    except requests.exceptions.RequestException as e:
-        raise SystemExit(e)
-    # print("RESP: ", resp.status_code)
+    async with httpx.AsyncClient(base_url=API_ENDPOINT) as client:
+        resp = await client.post(url="/api/residents", headers=headers, json=res_obj)
+    
     json_obj = resp.json()
     result = json_obj["data"]
    

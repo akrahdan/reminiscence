@@ -14,7 +14,7 @@ def upload_media(media, headers):
 
    
     resp = session.post('api/upload', headers=headers, data=res_obj, files=files)
-    print("Res: ", resp)
+    # print("Res: ", resp)
     json_obj = resp.json()
     result = json_obj["data"]
 

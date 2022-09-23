@@ -21,10 +21,7 @@ class FolderInput:
 
 @strawberry.type
 class MediaMutation:
-    # @strawberry.mutation
-    # def create_media(self, media: MediaInput, info: Info):
-    #     request = info.context["request"]
-    #     # save_media(media, headers=request.headers)
+   
     
     @strawberry.mutation
     async def read_file(self, file: Upload) -> str:
@@ -35,11 +32,7 @@ class MediaMutation:
         request = info.context["request"]
         print("Files:", media)
         contents = []
-        # for file in media.files:
-        #     content = (await file.read())
-        #     contents.append(content)
-        
-        # print("Content:", content)
+      
         media = upload_media(media, headers=request.headers)
         return Media.from_instance(media)
         

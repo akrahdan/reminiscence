@@ -14,7 +14,6 @@ async def load_events(header):
 
         res = await client.get(url="/api/events?populate=*", headers=headers)
 
-
     json_obj = res.json()
 
     eventList = json_obj["data"]
@@ -24,15 +23,14 @@ async def load_events(header):
     return list(event_iterator)
 
 
-def create_event(event, headers):
+async def create_event(event, headers):
+    headers = {"authorization": headers.get('authorization')}
+    
     res_obj = {'data': {'Title': event.Title,
                         'Description': event.Description, 'resident': event.resident}}
-
-    try:
-
-        resp = session.post('api/events', headers=headers, json=res_obj)
-    except requests.exceptions.RequestException as e:
-        raise SystemExit(e)
+    
+    async with httpx.AsyncClient(base_url=API_ENDPOINT) as client:
+        resp = await client.post(url="/api/events", headers=headers, json=res_obj)
 
     json_obj = resp.json()
     result = json_obj["data"]
