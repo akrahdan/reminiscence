@@ -20,8 +20,8 @@ class EventMutation:
         return Event.from_instance(res)
     
     @strawberry.mutation
-    async def delete_event(self, id: int, info: Info) -> int:
+    async def delete_event(self, id: int, info: Info) -> Event:
         request = info.context["request"]
         res = await delete_event(uid=id, headers=request.headers)
-        return res
+        return Event(id=res, title="", description="")
 
