@@ -2,7 +2,7 @@ import strawberry
 from typing import Optional
 from strawberry.types import Info
 from .definitions import Event
-from .resolvers import create_event
+from .resolvers import create_event, delete_event
 
 @strawberry.input
 class EventInput:
@@ -18,3 +18,10 @@ class EventMutation:
         request = info.context["request"]
         res = await create_event(event=event, headers=request.headers)
         return Event.from_instance(res)
+    
+    @strawberry.mutation
+    async def delete_event(self, id: int, info: Info) -> int:
+        request = info.context["request"]
+        res = await delete_event(uid=id, headers=request.headers)
+        return res
+

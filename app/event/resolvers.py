@@ -41,6 +41,17 @@ async def create_event(event, headers):
     return event
 
 
+async def delete_event(uid, headers):
+    headers = {"authorization": headers.get('authorization')}
+    async with httpx.AsyncClient(base_url=API_ENDPOINT) as client:
+        res = await client.delete(url=f"/api/events/{uid}", headers=headers)
+    
+    obj = res.josn()
+    result = obj["data"]
+    return result["id"]
+    
+
+
 def transform_attribute(attr):
     attributes = {}
     attributes['title'] = attr["Title"]
