@@ -46,7 +46,7 @@ async def delete_event(uid, headers):
     async with httpx.AsyncClient(base_url=API_ENDPOINT) as client:
         res = await client.delete(url=f"/api/events/{uid}", headers=headers)
     
-    obj = res.josn()
+    obj = res.json()
     result = obj["data"]
     return result["id"]
     
