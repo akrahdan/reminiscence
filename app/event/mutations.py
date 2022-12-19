@@ -23,5 +23,5 @@ class EventMutation:
     async def delete_event(self, id: int, info: Info) -> Event:
         request = info.context["request"]
         res = await delete_event(uid=id, headers=request.headers)
-        return Event(id=res, title="", description="")
+        return Event(id=res, title="", description="",createdAt= "", updatedAt="", resident=None, photos=[])
 
